@@ -199,6 +199,7 @@ jobs:
       - name: Publish evidence
         uses: cloudbees-io/publish-evidence-item@v1
         with:
+          artifact-id: "${{ cloudbees.scm.sha }}"
           content: |-
             ## Deployed environment
             [Production frontend](https://hackers-organized-prod.preview.cb-demos.io/)
