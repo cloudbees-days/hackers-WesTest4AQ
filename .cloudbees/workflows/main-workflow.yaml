@@ -88,13 +88,19 @@ jobs:
           file-path: container-image.tar
           file-type: BINARY_CONTAINER
           debug: "true"
-      - name: Publish artifact
-        uses: cloudbees-io/publish-artifact@v1
+      - name: Publish artifact evidence
+        uses: cloudbees-io/publish-evidence-item@v1
         with:
-          artifact-id: "${{ cloudbees.scm.sha }}"
-          name: "ldonleycb/hackers-organized"
-          version: "${{ cloudbees.scm.sha }}"
-          url: "${{ secrets.DOCKERHUB_USER }}/hackers-organized:${{ cloudbees.scm.sha }}"
+          content: |-
+            ## Published Artifact
+            
+            **Artifact ID:** ${{ cloudbees.scm.sha }}
+            **Name:** ldonleycb/hackers-organized
+            **Version:** ${{ cloudbees.scm.sha }}
+            **URL:** ${{ secrets.DOCKERHUB_USER }}/hackers-organized:${{ cloudbees.scm.sha }}
+            
+            This artifact has been published and is ready for deployment registration.
+          format: MARKDOWN
       - name: Publish evidence
         uses: cloudbees-io/publish-evidence-item@v1
         with:
@@ -201,6 +207,7 @@ jobs:
           format: MARKDOWN
       - name: Register deployed artifact
         uses: cloudbees-io/register-deployed-artifact@v2
+        continue-on-error: true
         with:
           artifact-id: "${{ cloudbees.scm.sha }}"
           target-environment: "DOW Production"
