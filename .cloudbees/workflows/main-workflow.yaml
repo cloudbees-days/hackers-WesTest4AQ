@@ -82,7 +82,6 @@ jobs:
           build-args: BUILDKIT_CONTEXT_KEEP_GIT_DIR=1,BUILDKIT_INLINE_CACHE=1
       - uses: cloudbees-io/asset-chain-utils-preprod/upload-binary@v1
         name: Upload binary from container build
-        continue-on-error: true
         id: upload-binary
         with:
           file-path: container-image.tar
