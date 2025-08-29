@@ -196,10 +196,6 @@ jobs:
         uses: cloudbees-io/register-deployed-artifact@v2
         with:
           artifact-id: "${{ cloudbees.scm.sha }}"
-          name: "ldonleycb/hackers-organized"
-          version: "${{ cloudbees.scm.sha }}"
-          url: "${{ secrets.DOCKERHUB_USER }}/hackers-organized:${{ cloudbees.scm.sha }}"
-          digest: ""
           target-environment: "DOW Production"
     needs:
       - build-container-image
