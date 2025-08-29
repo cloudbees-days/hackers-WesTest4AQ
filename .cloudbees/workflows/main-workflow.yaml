@@ -90,7 +90,7 @@ jobs:
           debug: "true"
       - name: Register build artifact
         id: register-artifact
-        uses: cloudbees-io/register-build-artifact@v1
+        uses: cloudbees-io/register-build-artifact@v2
         with:
           name: "ldonleycb/hackers-organized"
           version: "${{ cloudbees.scm.sha }}"
@@ -186,8 +186,8 @@ jobs:
         name: Set kubeconfig
         with:
           secname: ${{ secrets.kubeconfig }}
-      - uses: cloudbees-io/kustomize-deploy@v1
-        name: Deploy to cluster
+      - name: Deploy to cluster
+        uses: cloudbees-io/kustomize-deploy@v1
         kind: deploy
         with:
           kustomization-base-dir: ${{ cloudbees.workspace }}/k8s/base
@@ -206,7 +206,7 @@ jobs:
       - name: Register deployed artifact
         uses: cloudbees-io/register-deployed-artifact@v2
         with:
-          artifact-id: "${{ needs.build-container-image.outputs.ARTIFACT_ID }}"
+          artifact-id: ${{ needs.build-container-image.outputs.ARTIFACT_ID }}
           target-environment: "DOW Production"
     needs:
       - build-container-image
