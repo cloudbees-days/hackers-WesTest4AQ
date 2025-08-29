@@ -192,8 +192,8 @@ jobs:
 
             Running hackers-organized:${{ cloudbees.scm.sha }}
           format: MARKDOWN
-      - name: Register_deployed_artifact
-        uses: https://github.com/cloudbees-io/register-deployed-artifact@v2
+      - name: Register deployed artifact
+        uses: cloudbees-io/register-deployed-artifact@v2
         with:
           artifact-id: "${{ cloudbees.scm.sha }}"
           name: "ldonleycb/hackers-organized"
