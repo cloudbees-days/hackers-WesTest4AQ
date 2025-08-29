@@ -93,12 +93,12 @@ jobs:
         with:
           content: |-
             ## Published Artifact
-            
+
             **Artifact ID:** ${{ cloudbees.scm.sha }}
             **Name:** ldonleycb/hackers-organized
             **Version:** ${{ cloudbees.scm.sha }}
             **URL:** ${{ secrets.DOCKERHUB_USER }}/hackers-organized:${{ cloudbees.scm.sha }}
-            
+
             This artifact has been published and is ready for deployment registration.
           format: MARKDOWN
       - name: Publish evidence
@@ -185,33 +185,34 @@ jobs:
     steps:
       - name: Checkout
         uses: cloudbees-io/checkout@v1
-      - uses: cashokannamalai/kubeconfig@v1
-        name: Set kubeconfig
+      - name: Set kubeconfig
+        uses: cashokannamalai/kubeconfig@v1
         with:
           secname: ${{ secrets.kubeconfig }}
-      - uses: cloudbees-io/kustomize-deploy@v1
-        name: Deploy to cluster
+      - name: Deploy to cluster
         kind: deploy
+        uses: cloudbees-io/kustomize-deploy@v1
         with:
           kustomization-base-dir: ${{ cloudbees.workspace }}/k8s/base
           kustomization-overlays-dir: ${{ cloudbees.workspace }}/k8s/overlays/prod
           environment-variables: "{}"
       - name: Publish evidence
-        uses: cloudbees-io/publish-evidence-item@v1
         with:
-          artifact-id: "${{ cloudbees.scm.sha }}"
           content: |-
             ## Deployed environment
             [Production frontend](https://hackers-organized-prod.preview.cb-demos.io/)
 
             Running hackers-organized:${{ cloudbees.scm.sha }}
           format: MARKDOWN
+        uses: cloudbees-io/publish-evidence-item@v1
       - name: Register deployed artifact
         uses: cloudbees-io/register-deployed-artifact@v2
         continue-on-error: true
         with:
-          artifact-id: "${{ cloudbees.scm.sha }}"
-          target-environment: "DOW Production"
+          artifact-id: ${{ cloudbees.scm.sha }}
+          target-environment: DOW Production
     needs:
       - build-container-image
       - scan
+    outputs:
+      artifact-id: ${{ cloudbees.scm.sha }}
